@@ -26,7 +26,7 @@ export function TemplatesMarketplace({ onTemplateSelect }: TemplatesMarketplaceP
   const filteredTemplates = templates.filter(template =>
     template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     template.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    template.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+    template.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const handleUseTemplate = (template: any) => {
