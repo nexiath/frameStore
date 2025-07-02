@@ -554,7 +554,7 @@ export async function getFrameAnalytics(frameId: string, days = 30): Promise<Fra
     }, {} as Record<string, number>);
 
     const topCountries = Object.entries(countryStats)
-      .map(([country, count]) => ({ country, count }))
+      .map(([country, count]) => ({ country, count: count as number }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
 

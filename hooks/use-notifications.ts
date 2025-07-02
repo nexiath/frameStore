@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import useSWR from 'swr';
-import { getUserNotifications, markNotificationAsRead, Notification } from '@/lib/supabase';
+import { getUserNotifications, markNotificationAsRead, Notification, supabase } from '@/lib/supabase';
 import { useAuth } from './use-auth';
 import { toast } from 'sonner';
 

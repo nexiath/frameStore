@@ -20,6 +20,18 @@ const nextConfig = {
       'utf-8-validate': 'commonjs utf-8-validate',
       'bufferutil': 'commonjs bufferutil',
     });
+
+    // Exclude HeartbeatWorker from Terser minification to avoid ES6 module issues
+    if (config.optimization && config.optimization.minimizer) {
+      config.optimization.minimizer.forEach(minimizer => {
+        if (minimizer.constructor.name === 'TerserPlugin') {
+          if (!minimizer.options.exclude) {
+            minimizer.options.exclude = [];
+          }
+          minimizer.options.exclude.push(/HeartbeatWorker\.js$/);
+        }
+      });
+    }
     
     return config;
   },

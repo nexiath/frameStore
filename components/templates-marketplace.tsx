@@ -189,7 +189,7 @@ export function TemplatesMarketplace({ onTemplateSelect }: TemplatesMarketplaceP
                       
                       <div className="flex items-center justify-between">
                         <div className="flex flex-wrap gap-1">
-                          {template.tags.slice(0, 2).map(tag => (
+                          {template.tags.slice(0, 2).map((tag: string) => (
                             <Badge key={tag} variant="outline" className="text-xs">
                               {tag}
                             </Badge>
