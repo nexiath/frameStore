@@ -4,7 +4,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
-  transpilePackages: ['@coinbase/wallet-sdk'],
+  transpilePackages: [],
   experimental: {
     esmExternals: 'loose',
   },
@@ -21,17 +21,13 @@ const nextConfig = {
       'bufferutil': 'commonjs bufferutil',
     });
 
-    // Exclude HeartbeatWorker from Terser minification to avoid ES6 module issues
-    if (config.optimization && config.optimization.minimizer) {
-      config.optimization.minimizer.forEach(minimizer => {
-        if (minimizer.constructor.name === 'TerserPlugin') {
-          if (!minimizer.options.exclude) {
-            minimizer.options.exclude = [];
-          }
-          minimizer.options.exclude.push(/HeartbeatWorker\.js$/);
-        }
-      });
-    }
+    // Completely ignore HeartbeatWorker to prevent processing
+    config.externals.push(function({context, request}, callback) {
+      if (request && request.includes('HeartbeatWorker')) {
+        return callback(null, 'var {}');
+      }
+      callback();
+    });
     
     return config;
   },

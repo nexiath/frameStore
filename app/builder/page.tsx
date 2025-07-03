@@ -1,12 +1,18 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { FrameBuilder } from '@/components/FrameBuilder';
 import { FramePreview } from '@/components/FramePreview';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+
+// Dynamically import FrameBuilder to avoid SSR issues
+const FrameBuilder = dynamic(
+  () => import('@/components/FrameBuilder').then((mod) => ({ default: mod.FrameBuilder })),
+  { ssr: false }
+);
 
 interface FrameData {
   title: string;
@@ -24,6 +30,12 @@ export default function BuilderPage() {
     button1_label: 'Click Me!',
     button1_target: 'https://example.com'
   });
+  
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleFrameChange = (newFrameData: FrameData, json: string) => {
     setFrameData(newFrameData);
@@ -58,7 +70,9 @@ export default function BuilderPage() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <FrameBuilder onFrameChange={handleFrameChange} />
+          {isClient && (
+            <FrameBuilder onFrameChange={handleFrameChange} />
+          )}
         </motion.div>
 
         {/* Right: Preview */}

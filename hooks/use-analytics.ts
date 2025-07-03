@@ -27,6 +27,11 @@ export function useAnalyticsTracking() {
     metadata?: any;
   }) => {
     try {
+      // Only execute on client side
+      if (typeof window === 'undefined') {
+        return false;
+      }
+      
       // Get user location and device info
       const userAgent = navigator.userAgent;
       

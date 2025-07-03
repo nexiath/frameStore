@@ -34,6 +34,11 @@ export function useAuthState() {
 
   // Load auth state on mount
   useEffect(() => {
+    // Only execute on client side
+    if (typeof window === 'undefined') {
+      return;
+    }
+    
     const stored = loadAuthState();
     if (stored && stored.walletAddress === address) {
       setAuthState(stored);

@@ -72,6 +72,11 @@ export function FrameBuilder({ onFrameChange }: FrameBuilderProps) {
 
   // Load template data from localStorage if available
   useEffect(() => {
+    // Only execute on client side
+    if (typeof window === 'undefined') {
+      return;
+    }
+    
     const templateData = localStorage.getItem('framestore_template_data');
     if (templateData) {
       try {
@@ -154,6 +159,12 @@ export function FrameBuilder({ onFrameChange }: FrameBuilderProps) {
 
   const copyToClipboard = async () => {
     try {
+      // Only execute on client side
+      if (typeof window === 'undefined' || !navigator.clipboard) {
+        toast.error('Clipboard not available');
+        return;
+      }
+      
       await navigator.clipboard.writeText(generatedJSON);
       setCopied(true);
       toast.success('Copied!', {
@@ -167,6 +178,12 @@ export function FrameBuilder({ onFrameChange }: FrameBuilderProps) {
   };
 
   const downloadJSON = () => {
+    // Only execute on client side
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      toast.error('Download not available');
+      return;
+    }
+    
     const blob = new Blob([generatedJSON], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
