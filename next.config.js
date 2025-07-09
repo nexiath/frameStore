@@ -14,6 +14,7 @@ const nextConfig = {
       fs: false,
       net: false,
       tls: false,
+      encoding: false,
     };
     
     config.externals.push({
